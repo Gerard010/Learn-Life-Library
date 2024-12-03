@@ -5,10 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn Life Library</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f3f3f3; color: #333; }
-        .container { max-width: 600px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 8px; }
-        .hidden { display: none; }
-        h2 { color: #0056b3; }
+        :root {
+            --primary-color: #6A994E;
+            --secondary-color: #ff7b00;
+            --background-color: #fdfdfd;
+            --text-color: #333;
+            --accent-color: #48dbfb;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        @keyframes hover-effect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color); 
+            color: var(--text-color); 
+            margin: 0; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+    
+        .container { 
+            max-width: 500px; 
+            margin: auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+    
+        h2 { 
+            color: var(--primary-color); 
+            margin-bottom: 20px; 
+            font-size: 24px;
+            text-align: center;
+            animation: fadeIn 0.7s ease-out;
+        }
+    
+        label { 
+            display: block; 
+            margin: 10px 0 5px; 
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+    
+        input[type="text"], 
+        input[type="password"], 
+        input[type="date"] { 
+            width: 70%; /* Barras más cortas */
+            padding: 10px; 
+            border: 2px solid var(--accent-color); 
+            border-radius: 8px; 
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            margin-left: 15%; /* Centrar inputs */
+        }
+    
+        input[type="text"]:focus, 
+        input[type="password"]:focus, 
+        input[type="date"]:focus { 
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.2);
+        }
+    
+        button { 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            display: block;
+            margin: 15px auto; /* Centrar botones */
+        }
+    
+        button:hover { 
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
+        }
+    
+        button:active {
+            transform: translateY(1px);
+        }
+    
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+    
+        li { 
+            background: var(--background-color); 
+            margin: 10px 0; 
+            padding: 10px; 
+            border-radius: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+    
+        li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    
+        .hidden { 
+            display: none; 
+        }
+    
+        #error-msg { 
+            color: #ff6b6b; 
+            text-align: center;
+            margin-top: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+    
+        /* Animación de entrada para elementos */
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+    
+        /* Aplicar animación a elementos de lista */
+        li {
+            animation: slideIn 0.5s ease;
+        }
     </style>
 </head>
 <body>
@@ -41,25 +182,25 @@
             <label for="new-book-title">Título del libro:</label>
             <input type="text" id="new-book-title" placeholder="Título del libro">
             <button onclick="addLibraryBook()">Añadir Libro</button>
+            
             <h3>Libros en la biblioteca:</h3>
             <ul id="library-book-list"></ul>
             <h3>Libros a devolver por alumnos:</h3>
             <ul id="teacher-book-list"></ul>
             <button onclick="logout()">Cerrar Sesión</button>
         </div>
-    </div>
 
     <script>
-        const teacherPassword = "Teacher_L3arn_L1fe";
+        const teacherPassword = "Teacher_LearnLife";
         const studentPasswords = {
             "Gerard": "Learner_Gerard",
             "Juan": "Learner_Juan",
             "Alberto": "Learner_Alberto"
         };
-
+    
         function login() {
             const password = document.getElementById("password").value;
-
+    
             if (password === teacherPassword) {
                 document.getElementById("login-section").classList.add("hidden");
                 document.getElementById("teacher-section").classList.remove("hidden");
@@ -77,23 +218,23 @@
                 }
             }
         }
-
-        function logout() {
+    
+            function logout() {
             document.getElementById("login-section").classList.remove("hidden");
             document.getElementById("student-section").classList.add("hidden");
             document.getElementById("teacher-section").classList.add("hidden");
             document.getElementById("password").value = "";
             document.getElementById("error-msg").style.display = "none";
         }
-
+    
         function addBook() {
             const bookTitle = document.getElementById("book-title").value;
             const returnDate = document.getElementById("return-date").value;
             const studentName = document.getElementById("student-welcome").textContent.split(": ")[1];
-
+    
             const libraryBooks = JSON.parse(localStorage.getItem('libraryBooks')) || [];
             const bookExists = libraryBooks.some(book => book.bookTitle === bookTitle);
-
+    
             if (bookExists) {
                 if (bookTitle && returnDate) {
                     const books = JSON.parse(localStorage.getItem('books')) || [];
@@ -110,10 +251,10 @@
                 alert("Este libro no existe en la biblioteca.");
             }
         }
-
+    
         function addLibraryBook() {
             const newBookTitle = document.getElementById("new-book-title").value;
-
+    
             if (newBookTitle) {
                 const libraryBooks = JSON.parse(localStorage.getItem('libraryBooks')) || [];
                 libraryBooks.push({ bookTitle: newBookTitle });
@@ -124,13 +265,13 @@
                 alert("Por favor, ingresa un título de libro.");
             }
         }
-
+    
         function loadStudentData(studentName) {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const studentBooks = books.filter(book => book.name === studentName);
             const list = document.getElementById("student-book-list");
             list.innerHTML = "";
-
+    
             studentBooks.forEach((book, index) => {
                 const item = document.createElement("li");
                 item.textContent = `${book.bookTitle} - Devolver el: ${book.returnDate}`;
@@ -149,7 +290,7 @@
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const list = document.getElementById("teacher-book-list");
             list.innerHTML = "";
-
+    
             books.forEach((book, index) => {
                 const item = document.createElement("li");
                 item.textContent = `Alumno: ${book.name}, Libro: ${book.bookTitle}, Fecha de devolución: ${book.returnDate}`;
@@ -163,42 +304,56 @@
                 list.appendChild(item);
             });
         }
-
+    
         function loadLibraryBooks() {
             const libraryBooks = JSON.parse(localStorage.getItem('libraryBooks')) || [];
             const list = document.getElementById("library-book-list");
             list.innerHTML = "";
-
-            libraryBooks.forEach(book => {
+    
+            libraryBooks.forEach((book, index) => {
                 const item = document.createElement("li");
                 item.textContent = book.bookTitle;
+                
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Eliminar";
+                deleteBtn.style.marginLeft = "10px";
+                deleteBtn.onclick = () => deleteLibraryBook(index);
+                
+                item.appendChild(deleteBtn);
                 list.appendChild(item);
             });
         }
-
+    
         function deleteBook(index) {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             books.splice(index, 1);
             localStorage.setItem('books', JSON.stringify(books));
-
+    
             const studentName = document.getElementById("student-welcome").textContent.split(": ")[1];
             loadStudentData(studentName);
             loadTeacherData();
         }
 
+        function deleteLibraryBook(index) {
+            const libraryBooks = JSON.parse(localStorage.getItem('libraryBooks')) || [];
+            libraryBooks.splice(index, 1);
+            localStorage.setItem('libraryBooks', JSON.stringify(libraryBooks));
+            loadLibraryBooks();
+        }
+    
         function downloadBooks() {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             let text = "Alumno, Libro, Fecha de devolución\n";
             books.forEach(book => {
                 text += `${book.name}, ${book.bookTitle}, ${book.returnDate}\n`;
             });
-
+    
             const blob = new Blob([text], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = "books.txt";
             link.click();
         }
-    </script>
+    </script> 
 </body>
 </html>
